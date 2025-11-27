@@ -110,7 +110,7 @@ export default function Login() {
         
         {/* Footer en bas de page (Copyright) */}
         <p className="text-center text-blue-100/60 text-xs mt-8">
-          © 2025 Afrilane Network Expert - Tous droits réservés.
+          © 2025 Afriland Network Expert - Tous droits réservés.
         </p>
 
       </div>
