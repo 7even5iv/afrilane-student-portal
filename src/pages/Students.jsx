@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { Eye } from 'lucide-react';
 
 const MOCK_STUDENTS = [
-  { id: 1, nom: "Kamdem Paul", filiere: "Dev Web", matricule: "AF-24-001" },
-  { id: 2, nom: "Eboa Sarah", filiere: "Réseaux", matricule: "AF-24-002" },
-  { id: 3, nom: "Mveng Thomas", filiere: "Data Science", matricule: "AF-24-003" },
+  { id: 1, nom: "Essomba Brigitte", filiere: "Dev Web", matricule: "AF-24-001" },
+  { id: 2, nom: "Ghave Maeva", filiere: "Réseaux", matricule: "AF-24-002" },
+  { id: 3, nom: "Mve Arnorld", filiere: "Data Science", matricule: "AF-24-003" },
 ];
 
 export default function Students() {
