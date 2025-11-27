@@ -1,24 +1,39 @@
-// src/pages/Students.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StudentCard from '../components/StudentCard';
 import QRModal from '../components/QRModal';
+import AddStudentModal from '../components/AddStudentModal'; // Import du nouveau composant
 import { Search, Filter, Download, UserPlus } from 'lucide-react';
 
-// Données enrichies
-const MOCK_STUDENTS = [
+// Données par défaut (si c'est la première visite)
+const INITIAL_STUDENTS = [
   { id: 1, nom: "Ngoumou Loic", filiere: "Dev Web", matricule: "AF-24-001", status: "En règle", color: "bg-blue-100 text-blue-700" },
-  { id: 2, nom: "Ghave Maeva", filiere: "Se Co", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
-  { id: 3, nom: "Mvondo Jenny", filiere: "Se Co", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
-  { id: 4, nom: "Kamande Bruno", filiere: "Mt Res", matricule: "AF-24-004", status: "En règle", color: "bg-orange-100 text-orange-700" },
-  { id: 5, nom: "Essomba Brigitte", filiere: "Comptabilité", matricule: "AF-24-005", status: "En attente", color: "bg-pink-100 text-pink-700" },
+  { id: 2, nom: "Bruno Becker", filiere: "Réseaux", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
+  { id: 3, nom: "Ghave Maeva", filiere: "Comptabillité", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
 ];
 
 export default function Students() {
+  const [students, setStudents] = useState(INITIAL_STUDENTS);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // État pour ouvrir/fermer le formulaire
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtrer les étudiants selon la recherche
-  const filteredStudents = MOCK_STUDENTS.filter(s => 
+  // 1. CHARGEMENT : Au lancement, on essaie de lire le LocalStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('afrilane_students');
+    if (saved) {
+      setStudents(JSON.parse(saved));
+    }
+  }, []);
+
+  // 2. SAUVEGARDE : Quand on ajoute un étudiant, on sauvegarde dans LocalStorage
+  const handleAddStudent = (newStudent) => {
+    const updatedList = [newStudent, ...students]; // On ajoute le nouveau en haut de la liste
+    setStudents(updatedList);
+    localStorage.setItem('afrilane_students', JSON.stringify(updatedList)); // Sauvegarde durable
+  };
+
+  // Filtrage
+  const filteredStudents = students.filter(s => 
     s.nom.toLowerCase().includes(searchTerm.toLowerCase()) || 
     s.matricule.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -41,17 +56,18 @@ export default function Students() {
           </div>
         </div>
         
-        {/* Bouton d'ajout (visuel) */}
-        <button className="bg-blue-900 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 hover:bg-blue-800 transition shadow-lg shadow-blue-900/20">
+        {/* BOUTON NOUVEAU (Maintenant il marche !) */}
+        <button 
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-blue-900 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 hover:bg-blue-800 transition shadow-lg shadow-blue-900/20 active:scale-95"
+        >
           <UserPlus size={18} />
           <span>Nouveau</span>
         </button>
       </div>
 
-      {/* --- BARRE D'OUTILS (Recherche + Filtres) --- */}
+      {/* --- BARRE D'OUTILS --- */}
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-center">
-        
-        {/* Barre de recherche */}
         <div className="relative w-full md:w-96">
           <Search className="absolute left-3 top-3 text-gray-400" size={20} />
           <input 
@@ -62,28 +78,19 @@ export default function Students() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        {/* Boutons Filtres */}
         <div className="flex gap-2 w-full md:w-auto">
           <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 text-sm font-medium transition">
-            <Filter size={18} /> Filtres
-          </button>
-          <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 text-sm font-medium transition">
-            <Download size={18} /> Exporter
+            <Filter size={18} /> <span className="hidden md:inline">Filtres</span>
           </button>
         </div>
       </div>
 
-      {/* --- LISTE DES ÉTUDIANTS --- */}
+      {/* --- LISTE --- */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        
-        {/* En-tête de tableau (Desktop) */}
         <div className="hidden md:flex justify-between items-center px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <div>Étudiant & Filière</div>
           <div>Statut & Action</div>
         </div>
-
-        {/* Liste */}
         <div className="divide-y divide-gray-50">
           {filteredStudents.length > 0 ? (
             filteredStudents.map(student => (
@@ -94,19 +101,28 @@ export default function Students() {
               />
             ))
           ) : (
-            // État vide si la recherche ne donne rien
             <div className="p-8 text-center text-gray-500">
-              <p>Aucun étudiant trouvé pour "{searchTerm}"</p>
+              <p>Aucun résultat trouvé.</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* MODALE */}
+      {/* --- MODALES --- */}
+      
+      {/* 1. Modale QR Code */}
       {selectedStudent && (
         <QRModal 
           student={selectedStudent} 
           onClose={() => setSelectedStudent(null)} 
+        />
+      )}
+
+      {/* 2. Modale Ajout Étudiant (NOUVEAU) */}
+      {isAddModalOpen && (
+        <AddStudentModal 
+          onClose={() => setIsAddModalOpen(false)} 
+          onSave={handleAddStudent} 
         />
       )}
     </div>

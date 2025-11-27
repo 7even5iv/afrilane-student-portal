@@ -1,16 +1,31 @@
-# React + Vite
+# 🎓 AFRILANE Student Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Status](https://img.shields.io/badge/status-Live-green)
 
-Currently, two official plugins are available:
+Application Intranet moderne développée pour **AFRILANE Network Expert** afin de digitaliser la gestion académique et le contrôle d'accès.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 **Démo en ligne :** [Accéder au Portail](https://afrilane-student-portal-3kdb.vercel.app)
 
-## React Compiler
+## 🚀 Fonctionnalités Clés
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **🔐 Authentification Sécurisée** : Interface de connexion avec identité visuelle d'entreprise.
+- **📊 Tableau de Bord Live** : Vue d'ensemble des statistiques et de l'état des serveurs.
+- **👥 Gestion Étudiants** : 
+  - Liste dynamique avec recherche instantanée.
+  - **Ajout de nouveaux étudiants** en temps réel (Persistance locale).
+  - Filtrage par statut.
+- **📱 QR Code Generator** : Génération automatique de badges d'accès numériques scannables.
+- **📱 Mobile First** : Interface 100% adaptative (Sidebar sur PC / Bottom Bar sur Mobile).
 
-## Expanding the ESLint configuration
+## 🛠 Stack Technique
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend** : React.js (Vite)
+- **Styling** : Tailwind CSS (Design System moderne)
+- **Icônes** : Lucide React
+- **Déploiement** : Vercel Cloud
+
+## 👤 Auteur
+
+Projet réalisé par **[Ton Nom]** - Étudiant Développeur d'Applications.
+Conçu pour optimiser les processus administratifs d'Afrilane.
