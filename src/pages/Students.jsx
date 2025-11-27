@@ -1,16 +1,22 @@
-// src/pages/Students.jsx
 import { useState } from 'react';
-import QRCode from "react-qr-code";
+// On supprime l'import qui fait planter le site
+// import QRCode from "react-qr-code"; 
 import { Eye } from 'lucide-react';
 
-// Données fictives (Simule ta Base de Données)
 const MOCK_STUDENTS = [
   { id: 1, nom: "Kamdem Paul", filiere: "Dev Web", matricule: "AF-24-001" },
   { id: 2, nom: "Eboa Sarah", filiere: "Réseaux", matricule: "AF-24-002" },
+  { id: 3, nom: "Mveng Thomas", filiere: "Data Science", matricule: "AF-24-003" },
 ];
 
 export default function Students() {
   const [selectedStudent, setSelectedStudent] = useState(null);
+
+  // Fonction pour générer l'URL du QR Code (API gratuite et fiable)
+  const getQrUrl = (student) => {
+    const data = JSON.stringify({ id: student.id, mat: student.matricule });
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data)}`;
+  };
 
   return (
     <div>
@@ -33,20 +39,26 @@ export default function Students() {
         ))}
       </div>
 
-      {/* MODAL QR CODE (S'affiche quand on clique) */}
+      {/* MODAL QR CODE */}
       {selectedStudent && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center relative">
-            <button onClick={() => setSelectedStudent(null)} className="absolute top-2 right-4 text-2xl">&times;</button>
+            <button 
+              onClick={() => setSelectedStudent(null)} 
+              className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-red-500"
+            >
+              &times;
+            </button>
             
             <h2 className="text-xl font-bold mb-2 text-blue-900">CARTE D'ACCÈS</h2>
-            <p className="mb-4 text-gray-600">{selectedStudent.nom}</p>
+            <p className="mb-4 text-gray-600 font-semibold">{selectedStudent.nom}</p>
             
             <div className="bg-white p-2 border-2 border-dashed border-gray-300 inline-block mb-4">
-              {/* Le QR Code contient un JSON avec les infos de l'étudiant */}
-              <QRCode 
-                value={JSON.stringify({ id: selectedStudent.id, mat: selectedStudent.matricule })} 
-                size={180} 
+              {/* Ici on utilise une simple image, c'est impossible que ça plante */}
+              <img 
+                src={getQrUrl(selectedStudent)} 
+                alt="QR Code étudiant" 
+                className="w-40 h-40 object-contain"
               />
             </div>
             
