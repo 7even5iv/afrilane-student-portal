@@ -30,7 +30,7 @@ export default function QRModal({ student, onClose }) {
         </div>
         
         <p className="text-xs text-gray-400">Ce code est unique et personnel.</p>
-        <p className="text-xs text-gray-400 mt-1">© Afrilane Network Expert</p>
+        <p className="text-xs text-gray-400 mt-1">© Afriland Network Expert</p>
       </div>
     </div>
   );
