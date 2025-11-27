@@ -1,22 +1,55 @@
-import { Eye } from 'lucide-react';
+import { Eye, MoreHorizontal } from 'lucide-react';
 
 export default function StudentCard({ student, onViewBadge }) {
+  // Fonction pour déterminer la couleur du statut
+  const getStatusColor = (status) => {
+    switch(status) {
+      case "En règle": return "bg-green-100 text-green-700 border-green-200";
+      case "En attente": return "bg-orange-100 text-orange-700 border-orange-200";
+      default: return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  // Récupérer les initiales (ex: Kamdem Paul -> KP)
+  const initials = student.nom.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
   return (
-    <div className="flex justify-between items-center p-4 border-b hover:bg-gray-50 transition-colors bg-white first:rounded-t-lg last:rounded-b-lg">
-      <div className="overflow-hidden mr-3"> {/* mr-3 évite que le texte colle au bouton */}
-        <p className="font-bold text-gray-800 truncate">{student.nom}</p>
-        <p className="text-gray-500 text-xs truncate">{student.filiere}</p>
-        <p className="text-blue-600 text-[10px] font-mono mt-1">{student.matricule}</p>
-      </div>
+    <div className="group flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-gray-100 hover:bg-blue-50/50 transition-all bg-white last:border-0">
       
-      <button 
-        onClick={() => onViewBadge(student)}
-        className="bg-blue-600 text-white p-2 md:px-4 md:py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 active:scale-95 transition shadow-sm"
-      >
-        <Eye size={18} /> 
-        {/* Le texte "Voir Badge" disparait sur petit écran (hidden) et apparait sur moyen (md:block) */}
-        <span className="hidden md:block">Voir Badge</span>
-      </button>
+      {/* Partie Gauche : Avatar + Infos */}
+      <div className="flex items-center gap-4 mb-3 md:mb-0">
+        {/* Avatar avec initiales */}
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm shadow-sm ${student.color || 'bg-blue-100 text-blue-600'}`}>
+          {initials}
+        </div>
+        
+        <div>
+          <h4 className="font-bold text-gray-800 text-base">{student.nom}</h4>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <span>{student.matricule}</span>
+            <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span className="font-medium text-gray-700">{student.filiere}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Partie Droite : Statut + Bouton */}
+      <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto">
+        
+        {/* Badge de Statut */}
+        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(student.status)}`}>
+          {student.status}
+        </span>
+
+        {/* Bouton Voir Badge */}
+        <button 
+          onClick={() => onViewBadge(student)}
+          className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 hover:text-blue-600 hover:border-blue-600 px-4 py-2 rounded-lg transition-all shadow-sm active:scale-95"
+        >
+          <Eye size={18} />
+          <span className="text-sm font-medium">Badge</span>
+        </button>
+      </div>
     </div>
   );
 }
