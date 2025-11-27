@@ -6,8 +6,6 @@ import { Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  
-  // États pour les champs (même si on ne vérifie pas encore le mot de passe)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,98 +13,106 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulation d'une connexion sécurisée (délai de 1.5 secondes)
+    // Simulation connexion
     setTimeout(() => {
       setIsLoading(false);
-      navigate('/app'); // Redirection vers le tableau de bord
+      navigate('/app');
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-slate-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
+    // CONTENEUR PRINCIPAL (Prend tout l'écran)
+    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
+      
+      {/* --- 1. L'IMAGE DE FOND (Background) --- */}
+      <div className="absolute inset-0 z-0">
+        {/* L'image (Serveurs / Réseau) */}
+        <img 
+          src="https://images.unsplash.com/photo-1558494949-efc535b5c4c1?q=80&w=1920&auto=format&fit=crop" 
+          alt="Background Servers" 
+          className="w-full h-full object-cover"
+        />
+        {/* Le Voile Bleu (Overlay) pour rendre le texte lisible */}
+        <div className="absolute inset-0 bg-blue-900/80 mix-blend-multiply"></div>
+      </div>
+
+      {/* --- 2. LE CONTENU (Formulaire) --- */}
+      {/* z-10 permet de passer au-dessus de l'image */}
+      <div className="relative z-10 w-full max-w-md">
         
-        {/* En-tête avec Logo et Titre */}
-        <div className="bg-blue-600 p-8 text-center relative overflow-hidden">
-          {/* Cercle décoratif en fond */}
-          <div className="absolute top-0 left-0 w-full h-full bg-white opacity-5 rounded-full scale-150 translate-y-10"></div>
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500 backdrop-blur-sm">
           
-          <div className="relative z-10">
-            {/* LOGO AFRILANE */}
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/logo.png" 
-                alt="Logo Afrilane" 
-                className="h-20 w-auto bg-white rounded-lg p-2 shadow-lg object-contain"
-                onError={(e) => { e.target.style.display = 'none'; }} // Cache l'image si elle n'existe pas encore
-              />
-            </div>
+          {/* En-tête */}
+          <div className="bg-blue-600 p-8 text-center relative overflow-hidden">
+             {/* Petit effet déco */}
+            <div className="absolute top-0 left-0 w-full h-full bg-white opacity-5 rounded-full scale-150 translate-y-10"></div>
             
-            <h1 className="text-3xl font-bold text-white tracking-wide">AFRILANE</h1>
-            <p className="text-blue-100 mt-2 text-sm font-medium uppercase tracking-wider">Portail de Gestion Académique</p>
+            <div className="relative z-10">
+              <div className="flex justify-center mb-4">
+                <img 
+                  src="/logo.png" 
+                  alt="Logo Afrilane" 
+                  className="h-20 w-auto bg-white rounded-lg p-2 shadow-lg object-contain"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+              <h1 className="text-3xl font-bold text-white tracking-wide">AFRILANE</h1>
+              <p className="text-blue-100 mt-2 text-sm font-medium uppercase tracking-wider">Portail de Gestion Académique</p>
+            </div>
           </div>
+
+          {/* Formulaire */}
+          <form onSubmit={handleLogin} className="p-8 space-y-6">
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Identifiant</label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 text-gray-400" size={20} />
+                <input 
+                  type="text" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@afrilane.com" 
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition bg-gray-50 focus:bg-white"
+                  required 
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••" 
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition bg-gray-50 focus:bg-white"
+                  required 
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-lg"
+            >
+              {isLoading ? <Loader2 className="animate-spin" /> : <>Se connecter <ArrowRight size={20} /></>}
+            </button>
+
+            <div className="text-center mt-6 pt-4 border-t border-gray-100">
+              <p className="text-xs text-gray-400">Accès sécurisé réservé au personnel.</p>
+            </div>
+          </form>
         </div>
+        
+        {/* Footer en bas de page (Copyright) */}
+        <p className="text-center text-blue-100/60 text-xs mt-8">
+          © 2025 Afrilane Network Expert - Tous droits réservés.
+        </p>
 
-        {/* Formulaire */}
-        <form onSubmit={handleLogin} className="p-8 space-y-6">
-          
-          {/* Champ Identifiant */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Identifiant / Matricule</label>
-            <div className="relative">
-              <User className="absolute left-3 top-3 text-gray-400" size={20} />
-              <input 
-                type="text" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@afrilane.com" 
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-gray-50 focus:bg-white"
-                required 
-              />
-            </div>
-          </div>
-
-          {/* Champ Mot de passe */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••" 
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-gray-50 focus:bg-white"
-                required 
-              />
-            </div>
-          </div>
-
-          {/* Bouton de Connexion */}
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin" /> Connexion en cours...
-              </>
-            ) : (
-              <>
-                Se connecter <ArrowRight size={20} />
-              </>
-            )}
-          </button>
-
-          {/* Pied de page */}
-          <div className="text-center mt-6 pt-4 border-t border-gray-100">
-            <p className="text-xs text-gray-400">
-              Accès réservé au personnel administratif et technique.
-            </p>
-            <p className="text-xs text-gray-300 mt-1">Version 1.0.4 - Build 2025</p>
-          </div>
-        </form>
       </div>
     </div>
   );
