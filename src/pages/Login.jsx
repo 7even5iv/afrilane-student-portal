@@ -28,7 +28,7 @@ export default function Login() {
       <div className="absolute inset-0 z-0">
         {/* L'image (Serveurs / Réseau) */}
         <img 
-          src="https://images.unsplash.com/photo-1558494949-efc535b5c4c1?q=80&w=1920&auto=format&fit=crop" 
+          src="/bg-login.jpg" 
           alt="Background Servers" 
           className="w-full h-full object-cover"
         />
