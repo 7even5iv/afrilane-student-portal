@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Status](https://img.shields.io/badge/status-Live-green)
 
-Application Intranet moderne développée pour **AFRILANE Network Expert** afin de digitaliser la gestion académique et le contrôle d'accès.
+Application Intranet moderne développée pour **Afriland Network Expert** afin de digitaliser la gestion académique et le contrôle d'accès.
 
 🔗 **Démo en ligne :** [Accéder au Portail](https://afrilane-student-portal-3kdb.vercel.app)
 
