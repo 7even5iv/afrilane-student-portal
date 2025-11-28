@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion'; // Import des animations
 import StudentCard from '../components/StudentCard';
 import QRModal from '../components/QRModal';
-import AddStudentModal from '../components/AddStudentModal'; // Import du nouveau composant
-import { Search, Filter, Download, UserPlus } from 'lucide-react';
+import AddStudentModal from '../components/AddStudentModal';
+import { Search, Filter, UserPlus } from 'lucide-react';
 
 // Données par défaut (si c'est la première visite)
 const INITIAL_STUDENTS = [
-  { id: 1, nom: "Ngoumou Loic", filiere: "Dev Web", matricule: "AF-24-001", status: "En règle", color: "bg-blue-100 text-blue-700" },
-  { id: 2, nom: "Bruno Becker", filiere: "Réseaux", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
-  { id: 3, nom: "Ghave Maeva", filiere: "Comptabillité", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
+  { id: 1, nom: "Kamdem Paul", filiere: "Dev Web", matricule: "AF-24-001", status: "En règle", color: "bg-blue-100 text-blue-700" },
+  { id: 2, nom: "Eboa Sarah", filiere: "Réseaux", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
+  { id: 3, nom: "Mveng Thomas", filiere: "Data Science", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
+  { id: 4, nom: "Nguindjel Marie", filiere: "Cyber Secu", matricule: "AF-24-004", status: "En règle", color: "bg-orange-100 text-orange-700" },
+  { id: 5, nom: "Abena Jean", filiere: "Dev Web", matricule: "AF-24-005", status: "En attente", color: "bg-pink-100 text-pink-700" },
 ];
 
 export default function Students() {
   const [students, setStudents] = useState(INITIAL_STUDENTS);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // État pour ouvrir/fermer le formulaire
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   // 1. CHARGEMENT : Au lancement, on essaie de lire le LocalStorage
@@ -25,11 +28,11 @@ export default function Students() {
     }
   }, []);
 
-  // 2. SAUVEGARDE : Quand on ajoute un étudiant, on sauvegarde dans LocalStorage
+  // 2. SAUVEGARDE : Quand on ajoute un étudiant
   const handleAddStudent = (newStudent) => {
-    const updatedList = [newStudent, ...students]; // On ajoute le nouveau en haut de la liste
+    const updatedList = [newStudent, ...students];
     setStudents(updatedList);
-    localStorage.setItem('afrilane_students', JSON.stringify(updatedList)); // Sauvegarde durable
+    localStorage.setItem('afrilane_students', JSON.stringify(updatedList));
   };
 
   // Filtrage
@@ -39,10 +42,14 @@ export default function Students() {
   );
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      className="space-y-6"
+    >
       
-      {/* --- EN-TÊTE --- */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* --- EN-TÊTE AVEC LOGO (Visible sur Mobile) --- */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-4 md:border-0 md:pb-0">
         <div className="flex items-center gap-4">
           <img 
             src="/logo.png" 
@@ -51,19 +58,20 @@ export default function Students() {
             onError={(e) => { e.target.style.display = 'none'; }} 
           />
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Gestion des Étudiants</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Gestion des Étudiants</h1>
             <p className="text-gray-500 text-sm">Promotion 2024-2025</p>
           </div>
         </div>
         
-        {/* BOUTON NOUVEAU (Maintenant il marche !) */}
-        <button 
+        {/* BOUTON NOUVEAU */}
+        <motion.button 
+          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-blue-900 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 hover:bg-blue-800 transition shadow-lg shadow-blue-900/20 active:scale-95"
+          className="bg-blue-900 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 hover:bg-blue-800 transition shadow-lg shadow-blue-900/20"
         >
           <UserPlus size={18} />
           <span>Nouveau</span>
-        </button>
+        </motion.button>
       </div>
 
       {/* --- BARRE D'OUTILS --- */}
@@ -85,46 +93,63 @@ export default function Students() {
         </div>
       </div>
 
-      {/* --- LISTE --- */}
+      {/* --- LISTE AVEC ANIMATIONS --- */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="hidden md:flex justify-between items-center px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <div>Étudiant & Filière</div>
           <div>Statut & Action</div>
         </div>
-        <div className="divide-y divide-gray-50">
-          {filteredStudents.length > 0 ? (
-            filteredStudents.map(student => (
-              <StudentCard 
-                key={student.id} 
-                student={student} 
-                onViewBadge={setSelectedStudent} 
-              />
-            ))
-          ) : (
-            <div className="p-8 text-center text-gray-500">
-              <p>Aucun résultat trouvé.</p>
-            </div>
-          )}
-        </div>
+        
+        {/* Container animé */}
+        <motion.div layout className="divide-y divide-gray-50">
+          <AnimatePresence mode='popLayout'>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map(student => (
+                <motion.div
+                  layout
+                  key={student.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <StudentCard 
+                    student={student} 
+                    onViewBadge={setSelectedStudent} 
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                className="p-8 text-center text-gray-500"
+              >
+                <p>Aucun étudiant trouvé.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
       {/* --- MODALES --- */}
       
       {/* 1. Modale QR Code */}
-      {selectedStudent && (
-        <QRModal 
-          student={selectedStudent} 
-          onClose={() => setSelectedStudent(null)} 
-        />
-      )}
+      <AnimatePresence>
+        {selectedStudent && (
+          <QRModal 
+            student={selectedStudent} 
+            onClose={() => setSelectedStudent(null)} 
+          />
+        )}
+      </AnimatePresence>
 
-      {/* 2. Modale Ajout Étudiant (NOUVEAU) */}
+      {/* 2. Modale Ajout Étudiant */}
       {isAddModalOpen && (
         <AddStudentModal 
           onClose={() => setIsAddModalOpen(false)} 
           onSave={handleAddStudent} 
         />
       )}
-    </div>
+    </motion.div>
   );
 }
