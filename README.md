@@ -27,5 +27,5 @@ Application Intranet moderne développée pour **Afriland Network Expert** afin 
 
 ## 👤 Auteur
 
-Projet réalisé par **[Ton Nom]** - Étudiant Développeur d'Applications.
+Projet réalisé par **NGOUMOU AHANDA LOIC YVAN** - Étudiant Développeur d'Applications.
 Conçu pour optimiser les processus administratifs d'Afrilane.
