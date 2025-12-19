@@ -7,11 +7,11 @@ import { Search, Filter, UserPlus } from 'lucide-react';
 
 // Données par défaut (si c'est la première visite)
 const INITIAL_STUDENTS = [
-  { id: 1, nom: "Kamdem Paul", filiere: "Dev Web", matricule: "AF-24-001", status: "En règle", color: "bg-blue-100 text-blue-700" },
-  { id: 2, nom: "Eboa Sarah", filiere: "Réseaux", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
-  { id: 3, nom: "Mveng Thomas", filiere: "Data Science", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
-  { id: 4, nom: "Nguindjel Marie", filiere: "Cyber Secu", matricule: "AF-24-004", status: "En règle", color: "bg-orange-100 text-orange-700" },
-  { id: 5, nom: "Abena Jean", filiere: "Dev Web", matricule: "AF-24-005", status: "En attente", color: "bg-pink-100 text-pink-700" },
+  { id: 1, nom: "Ngoumou Loic", filiere: "Dev Web", matricule: "AF-24-001", status: "En règle", color: "bg-blue-100 text-blue-700" },
+  { id: 2, nom: "Kamnde Bruno", filiere: "MRI", matricule: "AF-24-002", status: "En règle", color: "bg-purple-100 text-purple-700" },
+  { id: 3, nom: "Mimok Stéphane", filiere: "MRI", matricule: "AF-24-003", status: "En attente", color: "bg-green-100 text-green-700" },
+  { id: 4, nom: "Ghave Maeva", filiere: "Comptabilité", matricule: "AF-24-004", status: "En règle", color: "bg-orange-100 text-orange-700" },
+  { id: 5, nom: "Lally Warren", filiere: "Dev Web", matricule: "AF-24-005", status: "En attente", color: "bg-pink-100 text-pink-700" },
 ];
 
 export default function Students() {
