@@ -79,9 +79,9 @@ export default function AddStudentModal({ onClose, onSave }) {
                 onChange={(e) => setFormData({...formData, filiere: e.target.value})}
               >
                 <option value="Dev Web">Développement Web</option>
-                <option value="Réseaux & Sécurité">Réseaux & Sécurité</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Gestion de Projet">Gestion de Projet</option>
+                <option value="Réseaux & Sécurité">Maintenance des réseaux informatique</option>
+                <option value="Data Science">Comptabilité</option>
+                <option value="Gestion de Projet">Secrétariat Bureautique</option>
               </select>
             </div>
           </div>
