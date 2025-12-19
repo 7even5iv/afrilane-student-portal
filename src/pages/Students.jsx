@@ -59,7 +59,7 @@ export default function Students() {
           />
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Gestion des Étudiants</h1>
-            <p className="text-gray-500 text-sm">Promotion 2024-2025</p>
+            <p className="text-gray-500 text-sm">Promotion 2025-2026</p>
           </div>
         </div>
         
